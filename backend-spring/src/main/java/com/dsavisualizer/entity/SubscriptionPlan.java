@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "subscription_plans", indexes = {
-        @Index(name = "idx_plan_name", columnList = "name", unique = true)
-})
+@Table(name = "subscription_plans")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -52,24 +50,24 @@ public class SubscriptionPlan {
     private String currency = "INR";
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(name = "billing_interval", nullable = false, length = 20)
     private BillingInterval billingInterval;
 
     @NotNull(message = "Max AI requests is required")
     @Min(value = 0, message = "Max AI requests must be zero or positive")
-    @Column(nullable = false)
+    @Column(name = "max_ai_requests", nullable = false)
     private Integer maxAiRequests;
 
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     @Builder.Default
     private Boolean isActive = true;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // ── Relationships ──────────────────────────────────────────────────

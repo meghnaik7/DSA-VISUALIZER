@@ -11,12 +11,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "algorithms", indexes = {
-        @Index(name = "idx_algorithm_slug", columnList = "slug", unique = true),
-        @Index(name = "idx_algorithm_category", columnList = "category")
+        @Index(name = "idx_algorithm_cat_diff", columnList = "category, difficulty")
 })
 @Getter
 @Setter
@@ -47,30 +48,37 @@ public class Algorithm {
     private String description;
 
     @Size(max = 100)
-    @Column(length = 100)
+    @Column(name = "input_type", length = 100)
     private String inputType;
 
     @Size(max = 100)
-    @Column(length = 100)
+    @Column(name = "output_type", length = 100)
     private String outputType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private Difficulty difficulty;
 
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     @Builder.Default
     private Boolean isActive = true;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // ── Relationships ──────────────────────────────────────────────────
+
+    /**
+     * Bidirectional many-to-many: problems solved by this algorithm.
+     */
+    @ManyToMany(mappedBy = "algorithms")
+    @Builder.Default
+    private Set<Problem> problems = new HashSet<>();
 
     @OneToMany(mappedBy = "algorithm", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

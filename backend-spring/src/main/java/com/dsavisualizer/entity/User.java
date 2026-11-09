@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = {
-        @Index(name = "idx_user_email", columnList = "email", unique = true)
-})
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -39,7 +37,7 @@ public class User {
     private String email;
 
     @NotBlank(message = "Password is required")
-    @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
     @Enumerated(EnumType.STRING)
@@ -47,16 +45,16 @@ public class User {
     @Builder.Default
     private UserRole role = UserRole.USER;
 
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     @Builder.Default
     private Boolean isActive = true;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // ── Relationships ──────────────────────────────────────────────────

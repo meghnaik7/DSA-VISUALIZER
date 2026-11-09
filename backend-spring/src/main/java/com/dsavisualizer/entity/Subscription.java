@@ -13,10 +13,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "subscriptions", indexes = {
-        @Index(name = "idx_sub_user", columnList = "user_id"),
-        @Index(name = "idx_sub_plan", columnList = "plan_id"),
-        @Index(name = "idx_sub_status", columnList = "status"),
-        @Index(name = "idx_sub_provider_id", columnList = "providerSubscriptionId")
+        @Index(name = "idx_sub_user_status", columnList = "user_id, status"),
+        @Index(name = "idx_sub_provider_id", columnList = "provider_subscription_id"),
+        @Index(name = "idx_sub_plan", columnList = "plan_id")
 })
 @Getter
 @Setter
@@ -42,25 +41,26 @@ public class Subscription {
     @Builder.Default
     private SubscriptionStatus status = SubscriptionStatus.PENDING;
 
-    @Column(nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
+    @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
+    @Column(name = "auto_renew", nullable = false)
     @Builder.Default
     private Boolean autoRenew = false;
 
     @Size(max = 255)
-    @Column(length = 255)
+    @Column(name = "provider_subscription_id", length = 255)
     private String providerSubscriptionId;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // ── Relationships ──────────────────────────────────────────────────

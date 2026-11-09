@@ -16,9 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "problems", indexes = {
-        @Index(name = "idx_problem_slug", columnList = "slug", unique = true),
-        @Index(name = "idx_problem_canonical_hash", columnList = "canonicalHash"),
-        @Index(name = "idx_problem_difficulty", columnList = "difficulty")
+        @Index(name = "idx_problem_canonical_hash", columnList = "canonical_hash")
 })
 @Getter
 @Setter
@@ -44,10 +42,10 @@ public class Problem {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String statement;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "input_description", columnDefinition = "TEXT")
     private String inputDescription;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "output_description", columnDefinition = "TEXT")
     private String outputDescription;
 
     @Column(columnDefinition = "TEXT")
@@ -58,15 +56,15 @@ public class Problem {
     private Difficulty difficulty;
 
     @Size(max = 64, message = "Hash must not exceed 64 characters")
-    @Column(length = 64)
+    @Column(name = "canonical_hash", length = 64)
     private String canonicalHash;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // ── Relationships ──────────────────────────────────────────────────

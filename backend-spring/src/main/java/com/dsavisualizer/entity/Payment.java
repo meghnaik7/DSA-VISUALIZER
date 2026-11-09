@@ -14,10 +14,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payments", indexes = {
-        @Index(name = "idx_payment_user", columnList = "user_id"),
-        @Index(name = "idx_payment_subscription", columnList = "subscription_id"),
-        @Index(name = "idx_payment_status", columnList = "status"),
-        @Index(name = "idx_payment_provider_id", columnList = "providerPaymentId", unique = true)
+        @Index(name = "idx_payment_user_created", columnList = "user_id, created_at"),
+        @Index(name = "idx_payment_subscription", columnList = "subscription_id")
 })
 @Getter
 @Setter
@@ -54,7 +52,7 @@ public class Payment {
     private String provider;
 
     @Size(max = 255)
-    @Column(unique = true, length = 255)
+    @Column(name = "provider_payment_id", unique = true, length = 255)
     private String providerPaymentId;
 
     @Enumerated(EnumType.STRING)
@@ -63,12 +61,13 @@ public class Payment {
     private PaymentStatus status = PaymentStatus.PENDING;
 
     @Size(max = 50)
-    @Column(length = 50)
+    @Column(name = "payment_method", length = 50)
     private String paymentMethod;
 
+    @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }

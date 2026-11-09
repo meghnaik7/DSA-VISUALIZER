@@ -14,10 +14,8 @@ import java.util.Map;
 
 @Entity
 @Table(name = "learning_histories", indexes = {
-        @Index(name = "idx_lh_user", columnList = "user_id"),
-        @Index(name = "idx_lh_artifact", columnList = "artifact_id"),
-        @Index(name = "idx_lh_status", columnList = "status"),
-        @Index(name = "idx_lh_created", columnList = "createdAt")
+        @Index(name = "idx_lh_user_created", columnList = "user_id, created_at"),
+        @Index(name = "idx_lh_artifact", columnList = "artifact_id")
 })
 @Getter
 @Setter
@@ -38,18 +36,18 @@ public class LearningHistory {
     @JoinColumn(name = "artifact_id")
     private AlgorithmArtifact algorithmArtifact;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(name = "original_query", columnDefinition = "TEXT")
     private String originalQuery;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(name = "request_type", nullable = false, length = 20)
     private RequestType requestType;
 
     /**
      * Optional example input the user supplied during the session.
      */
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "input_data", columnDefinition = "jsonb")
     private Map<String, Object> inputData;
 
     @Enumerated(EnumType.STRING)
@@ -58,11 +56,13 @@ public class LearningHistory {
     private LearningStatus status = LearningStatus.STARTED;
 
     @Min(value = 0, message = "Time spent cannot be negative")
+    @Column(name = "time_spent_seconds")
     private Integer timeSpentSeconds;
 
+    @Column(name = "completed_at")
     private LocalDateTime completedAt;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 }
