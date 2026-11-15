@@ -27,6 +27,9 @@ public interface AlgorithmArtifactRepository
     // Find all artifacts associated with an algorithm
     List<AlgorithmArtifact> findByAlgorithm_Id(Long algorithmId);
 
+    // Find all artifacts associated with a problem
+    List<AlgorithmArtifact> findByProblem_Id(Long problemId);
+
     // Find artifacts by their generation status
     List<AlgorithmArtifact> findByGenerationStatus(
             ArtifactStatus generationStatus
